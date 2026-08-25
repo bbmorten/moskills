@@ -1,0 +1,51 @@
+# Per-course media Ingress — rendered by deploy.sh for every course that ships
+# videos (public/assets/videos/ non-empty). Same host as the course's own
+# Ingress; this one takes ONLY /assets/videos/ and sends it to the media host
+# (ai-resource-sched/deploy-151-media/) through the media-bridge Service, so the
+# content's /assets/videos/… links work unchanged while the video leaves the
+# image (.dockerignore excludes public/assets/videos).
+#
+# Gate: ingress-nginx auth_request -> the platform's /api/authz/media/<slug>
+# (session cookie + enrollment, same decision as the course's own proxy). The
+# verdict is cached per session cookie for 10 minutes (200) / 1 minute (401/403),
+# so a seek through a video does not hit the platform per byte-range request,
+# and a revoked learner keeps at most 10 minutes. 401 -> /login?next=<video url>;
+# 403 (not enrolled / unpublished / unregistered) stays a 403, like proxy.js.
+#
+# Tokens: {{COURSE_ID}} {{HOST}} {{CATALOG_SLUG}} {{BASE_DOMAIN}} {{NAMESPACE}}.
+# use-regex mirrors the course Ingress (the controller puts the whole host in
+# regex mode; longest path wins, so ^/assets/videos/ beats the course's ^/).
+# Never add rewrite-target here — the media nginx needs the original URI.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: elearn-{{COURSE_ID}}-media
+  labels:
+    elearn/course: "{{COURSE_ID}}"
+    elearn/media: "true"
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/auth-url: "http://elearn-platform.{{NAMESPACE}}.svc.cluster.local/api/authz/media/{{CATALOG_SLUG}}"
+    nginx.ingress.kubernetes.io/auth-method: "GET"
+    nginx.ingress.kubernetes.io/auth-cache-key: "$cookie_elearn_session"
+    nginx.ingress.kubernetes.io/auth-cache-duration: "200 10m, 401 1m, 403 1m"
+    nginx.ingress.kubernetes.io/auth-signin: "https://{{BASE_DOMAIN}}/login"
+    nginx.ingress.kubernetes.io/auth-signin-redirect-param: "next"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: ["{{HOST}}"]
+      secretName: elearn-wildcard-tls
+  rules:
+    - host: {{HOST}}
+      http:
+        paths:
+          - path: /assets/videos/
+            pathType: Prefix
+            backend:
+              service:
+                name: elearn-media
+                port:
+                  number: 80

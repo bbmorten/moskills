@@ -1,0 +1,27 @@
+# Bridge from ns `elearn` to the media host in ns `elearn-media`
+# (ai-resource-sched/deploy-151-media/). An Ingress can only target a Service in
+# its own namespace, so the per-course media Ingress points at THIS Service,
+# which resolves to the media nginx across the namespace boundary.
+#
+# Owned by this repo because ns `elearn` is created/destroyed by the platform
+# scripts here; deploy.sh applies it idempotently before every media Ingress.
+# No `upstream-vhost` anywhere: the media nginx selects the site from the
+# ORIGINAL Host header (<slug>.elearn.morten.com.tr), which ingress-nginx
+# passes through unchanged.
+#
+# Gotcha: ingress-nginx resolves an ExternalName to IPs at config-sync time. If
+# the media host's Service is ever recreated (new ClusterIP), force a re-resolve:
+#   kubectl -n elearn annotate ingress -l elearn/media=true resync="$(date +%s)" --overwrite
+apiVersion: v1
+kind: Service
+metadata:
+  name: elearn-media
+  labels:
+    app.kubernetes.io/part-of: elearn
+spec:
+  type: ExternalName
+  externalName: elearn-media.elearn-media.svc.cluster.local
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

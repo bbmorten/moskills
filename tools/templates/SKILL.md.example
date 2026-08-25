@@ -1,0 +1,42 @@
+---
+name: my-skill
+description: One paragraph, written for an agent deciding whether to load this. Say what it does, what it produces, and — most importantly — the situations and phrasings that should trigger it ("Use when the user asks to …", "or mentions X, Y, Z"). This is the only text a consumer sees before loading the skill, so a vague description means the skill never fires.
+---
+
+# my-skill
+
+What this skill is for, in a sentence or two. Assume the reader is an agent
+that has just loaded it mid-task, not a human browsing a catalog.
+
+## When to use it
+
+The concrete triggers, and the cases where something else is the better tool.
+
+## How to use it
+
+The actual procedure. Prefer numbered steps with the exact commands.
+
+1. …
+2. …
+
+## Files
+
+- `scripts/…` — executables. Keep the git executable bit on real scripts and
+  off everything else; an executable file the scanner cannot read (a `.xsd`, a
+  `.tmpl`) is a finding, and at community trust a finding blocks the install.
+- `references/…` — longer docs the skill reads on demand rather than inlining.
+- `templates/…` — files the skill copies out.
+- `assets/…` — images, fonts, binaries it ships.
+
+## Before you push
+
+Run `node tools/validate.mjs my-skill`. It applies the same rules the skills
+service applies on install: path and size caps, and the content scanner at
+trust `community`, where any finding at all is fatal. See the README for the
+prose patterns that trip it.
+
+<!--
+Rename this file to skills/<name>/SKILL.md. It is deliberately NOT named
+SKILL.md here: any directory in this repo holding a SKILL.md is indexed and
+published as a skill, template or not.
+-->
