@@ -9,7 +9,7 @@ Prints each hit with its line number, then counts for the habits a phrase list c
 see (em dashes per paragraph, title-case headings, bold inline-header list items,
 sentence-initial transitions, emoji, a closing summary section), and checks every date
 that carries a weekday name against the calendar (English and Turkish names, and ISO
-dates). It is a hint list for the humanizer skill, not a
+dates). It is a hint list for the mbm-humanizer skill, not a
 verdict: a hit can be fine in context, and a clean scan does not mean the text reads
 well. Exit status is always 0.
 """
