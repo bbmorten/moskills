@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: en-launch-email-with-figures
+expected_outcome: |
+  A rewritten email that keeps the subject, greeting and sign-off, every figure (25 calendars, 3 seconds, 40+ time zones, 32%, $12 per user per month), the plan names, Google Calendar and Outlook, and the URL exactly, with the hype, the 'not just X' contrast, the stacked transitions and the chatbot phrases gone, and no new claims.

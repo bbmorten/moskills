@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: en-doc-markdown-file
+expected_outcome: |
+  rate-limits.md rewritten as a Markdown doc with sentence-case headings, the same sections, every inline code span, the fenced curl block, both URLs and all numbers (60-second, 429, 1 second, 32 seconds) unchanged, the em dashes and filler gone, and no new claims.
+context:
+  scaffold_script: place-files.sh

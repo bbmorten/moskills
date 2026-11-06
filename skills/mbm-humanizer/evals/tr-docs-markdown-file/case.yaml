@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: tr-docs-markdown-file
+expected_outcome: |
+  yedekleme.md rewritten in natural Turkish Markdown: headings without capitalised 've', the English UI labels Backups and Run now and the status done unchanged, the fenced command unchanged, 23:00, 30 gün and AES-256 kept, active voice where the doer is known, the -mektedir chains, 'Bu bağlamda', em dashes and the 'Sonuç olarak' closing reworked — with no new claims.
+context:
+  scaffold_script: place-files.sh

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: en-already-human-restraint
+expected_outcome: |
+  The text comes back nearly unchanged, because it is already plain human writing: every fact (22:00, 23:00, 40 and 70 minutes, 07:00, 30 days, the three things kept) intact, length within about 10%, and ideally a one-line note that little needed changing.

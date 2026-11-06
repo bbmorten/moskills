@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: tr-customer-email
+expected_outcome: |
+  A natural Turkish customer email that keeps the date (15 Kasım 2026 Cumartesi, 02:00–06:00), %99,9, 2.500 TL, the e-mail address and the URL exactly, keeps the polite 'siz' register, and loses the calques (rol oynamaktadır, sahip olacaktır, gerçekleştirmek, sizin hesabınız), 'Bu bağlamda', 'Sonuç olarak' and the chatbot opener — with no new claims.
